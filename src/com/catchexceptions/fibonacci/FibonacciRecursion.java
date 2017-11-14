@@ -2,7 +2,7 @@ package com.catchexceptions.fibonacci;
 
 import java.util.Scanner;
 
-public class FibonaccieRecursion {
+public class FibonacciRecursion {
 
 	public static void main (String[] args) {
 	    Scanner readerObj = new Scanner(System.in);
