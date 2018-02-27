@@ -1,0 +1,109 @@
+package com.catchexceptions;
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
+
+public class QuickSortParallel {
+
+	public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
+		//Create an array of 1000 size
+		int set[] = { 1000 };
+		//Fill the array with random numbers
+		for (int i = 0; i < set.length; i++) {
+			int arr[] = new int[set[i]];
+			for(int j = 0; j < set[i]; j++){
+				arr[j] = ThreadLocalRandom.current().nextInt(0, set[i] + 1);
+			}
+			new QuickSortParallel().sort(arr);
+		}
+	}
+	
+	//Initialize sort and measure running time in seconds
+	public int[] sort(int[] arr){
+		//semaphore to control thread synchronization
+		final AtomicInteger count = new AtomicInteger();
+		count.getAndAdd(1);
+		//Create thread pool
+		ExecutorService executor = Executors.newFixedThreadPool(2 * Runtime.getRuntime().availableProcessors());
+		long start = System.currentTimeMillis();
+		executor.submit(new ThreadedSort(arr, 0, arr.length-1, executor, count));
+		//Wait until main thread is notified that all threads are complete
+		try {
+			synchronized (count) {
+				count.wait();
+				System.out.println((System.currentTimeMillis() - start)/1000.0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return arr;
+	}
+
+}
+
+class ThreadedSort implements Runnable {
+
+	int MAX_THREADS = 2 * Runtime.getRuntime().availableProcessors();
+	int arr[];
+	int start;
+	int end;
+	ExecutorService executor;
+	AtomicInteger count;
+
+	ThreadedSort(int arr[], int start, int end, ExecutorService executor, AtomicInteger count) {
+		this.arr = arr;
+		this.start = start;
+		this.end = end;
+		this.executor = executor;
+		this.count = count;
+	}
+
+	@Override
+	public void run() {
+		quicksort(start, end);
+		//decrement count when thread completes and notify main thread
+		//if all child threads are done
+		synchronized (count) {
+			if (count.getAndDecrement() == 1){
+				count.notify();
+			}
+		}
+	}
+
+	//decide whether to execute sub lists as separate threads or within the same thread
+	private void quicksort(int start, int end) {
+		if (start < end) {
+			int pIndex = partition(arr, start, end);
+			if (count.get() >= MAX_THREADS) {
+				quicksort(start, pIndex - 1);
+				quicksort(pIndex + 1, end);
+			} else {
+				count.getAndAdd(2);
+				executor.execute(new ThreadedSort(arr, start, pIndex - 1, executor, count));
+				executor.execute(new ThreadedSort(arr, pIndex + 1, end, executor, count));
+			}
+		}
+	}
+
+	//partition the list and get the pivot location
+	private int partition(int[] arr, int start, int end) {
+		int pivot = arr[end];
+		int pIndex = start;
+		for (int i = start; i < end; i++) {
+			if (arr[i] <= pivot) {
+				int temp = arr[i];
+				arr[i] = arr[pIndex];
+				arr[pIndex] = temp;
+				pIndex++;
+			}
+		}
+		int temp = arr[pIndex];
+		arr[pIndex] = arr[end];
+		arr[end] = temp;
+		return pIndex;
+	}
+
+}
