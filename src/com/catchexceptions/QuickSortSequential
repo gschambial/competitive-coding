@@ -1,0 +1,57 @@
+package com.catchexceptions;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadLocalRandom;
+
+
+public class QuickSortSequential {
+
+	public static void main(String[] args) throws InterruptedException, ExecutionException {
+		//create an array of thousand numbers
+		int set[] = { 1000 };
+		//Fill the array with random numbers
+		for (int i = 0; i < set.length; i++) {
+			int arr[] = new int[set[i]];
+			for(int j = 0; j < set[i]; j++){
+				arr[j] = ThreadLocalRandom.current().nextInt(0, set[i] + 1);
+			}
+			new QuickSortSequential().sort(arr);
+		}
+	}
+	
+	//Calculate time to sort in seconds
+	public int[] sort(int[] arr){
+		long start = System.currentTimeMillis();
+		System.out.println();
+		new QuickSortSequential().quicksort(arr, 0, arr.length-1);
+		System.out.println((System.currentTimeMillis() - start)/1000.0);
+		return arr;
+	}
+	
+	//create sub lists and ask for sort
+	public void quicksort(int[] arr, int start, int end){
+		if(start < end){
+			int pIndex = partition(arr, start, end);
+			quicksort(arr, start, pIndex-1);
+			quicksort(arr, pIndex+1, end);
+		}
+	}
+	
+	//get partition index
+	public int partition(int[] arr, int start, int end){
+		int pivot = arr[end];
+		int pIndex = start;
+		for(int i = start; i < end; i++){
+			if(arr[i] <= pivot){
+				int temp = arr[i];
+				arr[i] = arr[pIndex];
+				arr[pIndex] = temp;
+				pIndex++;
+			}
+		}
+		int temp = arr[pIndex];
+		arr[pIndex] = arr[end];
+		arr[end] = temp;
+		return pIndex;
+	}
+
+}
