@@ -4,3 +4,4 @@ My day to day learning of algorithms, data structures and competitive coding mec
 ## 1. Fibonacci number using recursion
 ## 2. QuickSort Sequential
 ## 3. QuickSort Parallel
+## 4. Trie - Insert, Search, Delete
