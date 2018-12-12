@@ -11,7 +11,13 @@ public class LinkedListOperations {
 		ll.insertAtBegining(20);
 		ll.insertAtBegining(30);
 
+		System.out.println("After 3 inserts");
 		// Traverse LinkedList
+		ll.traverse();
+
+		ll.deleteAtBegining();
+
+		System.out.println("After 1 delete");
 		ll.traverse();
 	}
 
@@ -40,6 +46,15 @@ class LinkedList {
 		while (temp != null) {
 			System.out.println(temp.data);
 			temp = temp.next;
+		}
+	}
+
+	/**
+	 * Delete a node from beginning of LL
+	 */
+	void deleteAtBegining() {
+		if (head != null) {
+			head = head.next;
 		}
 	}
 
