@@ -2,23 +2,24 @@ package com.catchexceptions.linkedlist;
 
 public class LinkedListOperations {
 
-	Node head;
-
 	public static void main(String[] args) {
 
-		LinkedListOperations llOperations = new LinkedListOperations();
-
-		// Initialize head
-		llOperations.head = new Node(-1);
+		LinkedList ll = new LinkedList();
 
 		// Insert into LinkedList - O(n)
-		llOperations.insertAtBegining(10);
-		llOperations.insertAtBegining(20);
-		llOperations.insertAtBegining(30);
+		ll.insertAtBegining(10);
+		ll.insertAtBegining(20);
+		ll.insertAtBegining(30);
 
 		// Traverse LinkedList
-		llOperations.traverse();
+		ll.traverse();
 	}
+
+}
+
+class LinkedList {
+
+	Node head;
 
 	/**
 	 * Method to insert a new node at beginning of LL
@@ -27,8 +28,8 @@ public class LinkedListOperations {
 	 */
 	void insertAtBegining(int data) {
 		Node node = new Node(data);
-		node.next = head.next;
-		head.next = node;
+		node.next = head;
+		head = node;
 	}
 
 	/**
@@ -36,10 +37,9 @@ public class LinkedListOperations {
 	 */
 	void traverse() {
 		Node temp = head;
-		while (temp.next != null) {
-			temp = temp.next;
+		while (temp != null) {
 			System.out.println(temp.data);
-
+			temp = temp.next;
 		}
 	}
 
