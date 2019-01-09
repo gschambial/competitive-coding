@@ -2,75 +2,41 @@ package com.catchexceptions.linkedlist;
 
 public class LinkedListOperations {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		LinkedList ll = new LinkedList();
+        LinkedList ll = new LinkedList();
 
-		// Insert into LinkedList - O(n)
-		ll.insertAtBegining(10);
-		ll.insertAtBegining(20);
-		ll.insertAtBegining(30);
+        // Insert into LinkedList - O(n)
+        ll.insertAtBegining(10);
+        ll.insertAtBegining(20);
+        ll.insertAtBegining(30);
+        System.out.println("After inserting: 10, 20, 30");
+        // Traverse LinkedList
+        ll.traverse();
 
-		System.out.println("After 3 inserts");
-		// Traverse LinkedList
-		ll.traverse();
+        ll.deleteFromBegining();
+        System.out.println("After deleting: 30");
+        ll.traverse();
 
-		ll.deleteAtBegining();
+        ll.insertAtBegining(30);
+        System.out.println("After inserting: 30");
+        ll.traverse();
 
-		System.out.println("After 1 delete");
-		ll.traverse();
-	}
+        ll.deleteFromPosition(2);
+        System.out.println("After delete from position 2: 20");
+        ll.traverse();
 
-}
+        ll.insertAtPosition(2, 20);
+        System.out.println("After inserting 20 at Position 2");
+        ll.traverse();
 
-class LinkedList {
+        System.out.println("Length of LL is: " + ll.getLength());
 
-	Node head;
+        Node temp = ll.head;
+        System.out.println("Length of LL is: " + ll.getLengthRecursively(temp));
 
-	/**
-	 * Method to insert a new node at beginning of LL
-	 * 
-	 * @param data
-	 */
-	void insertAtBegining(int data) {
-		Node node = new Node(data);
-		node.next = head;
-		head = node;
-	}
-
-	/**
-	 * Method to traverse LL
-	 */
-	void traverse() {
-		Node temp = head;
-		while (temp != null) {
-			System.out.println(temp.data);
-			temp = temp.next;
-		}
-	}
-
-	/**
-	 * Delete a node from beginning of LL
-	 */
-	void deleteAtBegining() {
-		if (head != null) {
-			head = head.next;
-		}
-	}
+    }
 
 }
 
-/**
- * Node of linked list
- * 
- * @author gourav
- *
- */
-class Node {
-	int data;
-	Node next;
 
-	Node(int data) {
-		this.data = data;
-	}
-}
