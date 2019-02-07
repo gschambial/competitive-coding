@@ -21,7 +21,21 @@ public class FindNthelementFromEnd {
         ll.insertAtBegining(70);
         ll.insertAtBegining(80);
         ll.insertAtBegining(90);
-        ll.insertAtBegining(100);      
+        ll.insertAtBegining(100);   
+        System.out.println(getNthNodeFromEnd(ll.head, 1));
+    }
+    
+    static int getNthNodeFromEnd(Node lead, int n) {
+    	Node follow = lead;
+    	int count = 0;
+    	while(lead != null) {
+    		lead = lead.next;
+    		count++;
+    		if(count > n) {
+    			follow = follow.next;
+    		}
+    	}
+    	return follow.data;
     }
 
 }
