@@ -116,4 +116,25 @@ public class LinkedList {
 
     }
 
+    Node getFirstNodeReference() {
+        return this.head;
+    }
+
+    Node getLastNodeReference() {
+        Node start = head;
+        while (start.next != null) {
+            start = start.next;
+        }
+        return start;
+    }
+
+    Node getNodeAtNthPosition(Node start, int n) {
+        int count = 1;
+        while (count != n) {
+            count++;
+            start = start.next;
+        }
+        return start;
+    }
+
 }
